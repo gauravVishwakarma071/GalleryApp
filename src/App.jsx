@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
+import Card from './components/Card'
 const App = () => {
 
   const [userData, setUserData] = useState([])
@@ -27,15 +28,7 @@ const App = () => {
   if (userData.length > 0) {
     printUserData = userData.map(function (elem, idx) {
       return <div key={idx} className='bg-white rounded'>
-        <a href={elem.url} target="_blank" rel="noopener noreferrer">
-          <div className='bg-black p-0.4 rounded-md'>
-            <img
-              className='h-40 w-full object-cover rounded'
-              src={elem.download_url}
-              alt="image" />
-          </div>
-          <h2 className='text-black font-bold ml-2 '>{elem.author}</h2>
-        </a>
+        <Card elem={elem} />
       </div>
     })
   }
@@ -50,9 +43,12 @@ const App = () => {
         {printUserData}
       </div>
 
+
+      {/*Logic to display button */}
       {userData.length > 0 && (
         <div className='flex justify-center gap-6 items-center p-4'>
           <button
+            style={{ opacity: pageValue == 1 ? 0.5 : 1 }}
             className='bg-amber-300 text-sm text-black rounded px-4 py-2 font-semibold active:scale-90'
             onClick={() => {
               if (pageValue > 1) {
@@ -63,11 +59,17 @@ const App = () => {
           >
             Prev
           </button>
+
+          <h4 className='text-white'>page : {pageValue}</h4>
+
           <button
+            style={{ opacity: pageValue == 12 ? 0.5 : 1 }}
             className='bg-amber-300 text-sm text-black rounded px-4 py-2 font-semibold active:scale-90'
             onClick={() => {
-              setUserData([])
-              setPageValue(pageValue + 1)
+              if (pageValue < 12) {
+                setUserData([])
+                setPageValue(pageValue + 1)
+              }
             }}
           >
             Next
